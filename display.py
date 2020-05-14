@@ -52,7 +52,7 @@ class Display:
 		if not alt:
 			widget.config(height=4, width=16, relief='raised', fg='white', bg='black')
 		else:
-			widget.config(height=4, width=8, relief='flat', fg='black', bg='white')
+			widget.config(height=4, width=8, relief='flat', fg='black', bg='grey')
 
 	# Create tkinter buttons and radios, frames, etc..
 	def setup_graphics(self):
@@ -100,18 +100,8 @@ class Display:
 		for i in range(9):
 			for j in range(12):
 
-				# Ignore the empty corners
-				if i < 3 and j < 3:
-					continue
-				if i >= 6 and j < 3:
-					continue
-				if i < 3 and j >= 6:
-					continue
-				if i >= 6 and j >= 6:
-					continue
-
 				# Create new label
-				self.cube_grid[i][j] = Label(self.frames[0])
+				self.cube_grid[i][j] = Label(self.frames[0], bg="grey")
 				self.cube_grid[i][j].grid(row=i, column=j)
 				Display.widget_config(self.cube_grid[i][j], alt=True)
 
