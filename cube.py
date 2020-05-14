@@ -141,6 +141,18 @@ class Cube:
 
         self.tiles = self.rotations_list[face_index][rotation_type] @ self.tiles
 
+    # Apply inverse
+    def apply_inverse(self, face_index: int, rotation_type: int):
+
+        if rotation_type == 0:
+            self.apply_rotation(face_index, 2)
+        elif rotation_type == 1:
+            self.apply_rotation(face_index, 1)
+        elif rotation_type == 2:
+            self.apply_rotation(face_index, 0)
+        else:
+            raise ValueError("Rotation type invalid.")
+
     # Check if the cube is solved
     def is_solved(self) -> bool:
 
@@ -163,3 +175,33 @@ class Cube:
 
         # Return the grand prize
         return output
+
+
+if __name__ == "__main__":
+
+    # Checking determinants
+    from numpy.linalg import det
+
+    yan3 = Cube()
+    print(det(yan3.tiles))
+
+    for i in range(6):
+        for j in range(3):
+            print(det(yan3.rotations_list[i][j]))
+
+    # CW and CCW turns have determinant -1
+    # Half turns have determinant 1
+
+    # Checking inverses
+    for i in range(6):
+        for j in range(3):
+            yan3.apply_rotation(i, j)
+            yan3.apply_inverse(i, j)
+            assert yan3.is_solved()
+
+    # Checking runtime estimate
+    from tqdm import tqdm
+    for depth in tqdm(range(20)):
+        for i in range(6):
+            for j in range(3):
+                yan3.apply_rotation(i, j)
