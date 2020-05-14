@@ -50,9 +50,9 @@ class Display:
 	@staticmethod
 	def widget_config(widget, alt=False):
 		if not alt:
-			widget.config(height=4, width=16, relief='raised', fg='white', bg='black')
+			widget.config(height=4, width=16, relief='raised', fg='white', bg='black', borderwidth=2)
 		else:
-			widget.config(height=4, width=8, relief='flat', fg='black', bg='grey')
+			widget.config(height=4, width=8, relief='solid', fg='black', bg='grey', borderwidth=2)
 
 	# Create tkinter buttons and radios, frames, etc..
 	def setup_graphics(self):
@@ -155,6 +155,10 @@ class Display:
 		self.color_face(3, -1, 3, 9)
 		self.color_face(4, 2, 3, 0)
 		self.color_face(5, 2, 0, 3)
+
+		# Print if cube is solved
+		if self.cube.is_solved():
+			print("Cube is solved!")
 
 	# Activate the main loop
 	def mainloop(self):

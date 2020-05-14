@@ -141,6 +141,11 @@ class Cube:
 
         self.tiles = self.rotations_list[face_index][rotation_type] @ self.tiles
 
+    # Check if the cube is solved
+    def is_solved(self) -> bool:
+
+        return np.all(np.diag(self.tiles))
+
     # To string
     def __str__(self):
 
