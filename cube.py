@@ -38,11 +38,11 @@ class Rotation:
                     rotation_type: int) -> List[List[int]]:
 
         if rotation_type == 0:       # Clockwise
-            return [[face_1 * 6 + index_1, face_2 * 6 + index_2,   face_3 * 6 + index_3, face_4 * 6 + index_4]]
+            return [[face_1 * 8 + index_1, face_2 * 8 + index_2,   face_3 * 8 + index_3, face_4 * 8 + index_4]]
         elif rotation_type == 1:     # Half turn
-            return [[face_1 * 6 + index_1, face_3 * 6 + index_3], [face_2 * 6 + index_2, face_4 * 6 + index_4]]
+            return [[face_1 * 8 + index_1, face_3 * 8 + index_3], [face_2 * 8 + index_2, face_4 * 8 + index_4]]
         elif rotation_type == 2:     # Counter clockwise
-            return [[face_4 * 6 + index_4, face_3 * 6 + index_3,   face_2 * 6 + index_2, face_1 * 6 + index_1]]
+            return [[face_4 * 8 + index_4, face_3 * 8 + index_3,   face_2 * 8 + index_2, face_1 * 8 + index_1]]
         else:
             raise ValueError("Rotation type invalid.")
 

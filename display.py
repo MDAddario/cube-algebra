@@ -1,5 +1,7 @@
 from tkinter import *
 from cube import Cube
+from copy import deepcopy
+import numpy as np
 
 
 class Display:
@@ -24,6 +26,10 @@ class Display:
 		self.rotation = 0
 		self.setup_graphics()
 
+		# Setup the cube printing elements
+		self.cube_grid = []
+		self.setup_grid()
+
 		# Print the cube
 		self.print_cube()
 
@@ -46,7 +52,7 @@ class Display:
 		if not alt:
 			widget.config(height=4, width=16, relief='raised', fg='white', bg='black')
 		else:
-			widget.config(height=4, width=16, relief='flat', fg='black', bg='white')
+			widget.config(height=4, width=8, relief='flat', fg='black', bg='white')
 
 	# Create tkinter buttons and radios, frames, etc..
 	def setup_graphics(self):
@@ -81,9 +87,85 @@ class Display:
 		self.action_button.pack()
 		Display.widget_config(self.action_button)
 
+	# Setup the cube grid
+	def setup_grid(self):
+
+		# Allocate room for the grid
+		for i in range(9):
+			self.cube_grid.append([])
+			for j in range(12):
+				self.cube_grid[-1].append(None)
+
+		# Create the label objects
+		for i in range(9):
+			for j in range(12):
+
+				# Ignore the empty corners
+				if i < 3 and j < 3:
+					continue
+				if i >= 6 and j < 3:
+					continue
+				if i < 3 and j >= 6:
+					continue
+				if i >= 6 and j >= 6:
+					continue
+
+				# Create new label
+				self.cube_grid[i][j] = Label(self.frames[0])
+				self.cube_grid[i][j].grid(row=i, column=j)
+				Display.widget_config(self.cube_grid[i][j], alt=True)
+
+		# Color the centers
+		self.cube_grid[4][4].config(bg="white")
+		self.cube_grid[4][7].config(bg="red")
+		self.cube_grid[7][4].config(bg="green")
+		self.cube_grid[4][10].config(bg="yellow")
+		self.cube_grid[4][1].config(bg="orange")
+		self.cube_grid[1][4].config(bg="blue")
+
+	# Color a face
+	def color_face(self, face, rotation, i_start, j_start):
+
+		color_map = ["white", "red", "green", "yellow", "orange", "blue"]
+
+		# Create duplicate cube
+		temp = deepcopy(self.cube)
+
+		# Rotate face if necessary
+		if rotation != -1:
+			temp.apply_rotation(face, rotation)
+
+		# Span all columns
+		# TODO: MAYBE WE NEED TO SPAN THE ROWS
+		colors = []
+		for col in range(face * 8, face * 8 + 8):
+			color_code = np.argmax(self.cube.tiles[:, col])
+			colors.append(color_map[color_code // 8])
+
+		# Paint the cube
+		ptr = 0
+		for i in range(3):
+			for j in range(3):
+
+				if i == 1 and j == 1:
+					continue
+
+				self.cube_grid[i + i_start][j + j_start].config(bg=colors[ptr])
+				ptr += 1
+
+		# Clear the cube
+		del temp
+
 	# Print the cube
 	def print_cube(self):
-		pass
+
+		# Color the faces
+		self.color_face(0, 0, 3, 3)
+		self.color_face(1, 1, 3, 6)
+		self.color_face(2, -1, 6, 3)
+		self.color_face(3, -1, 3, 9)
+		self.color_face(4, 2, 3, 0)
+		self.color_face(5, 2, 0, 3)
 
 	# Activate the main loop
 	def mainloop(self):
