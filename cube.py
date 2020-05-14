@@ -1,4 +1,5 @@
 from copy import deepcopy
+from typing import List
 
 import numpy as np
 
@@ -6,23 +7,29 @@ import numpy as np
 class Rotation:
 
     @staticmethod
-    def create_rotation_matrix(size: int, indices: list) -> np.ndarray:
+    def create_matrix(size: int, indices_list: List[list]) -> np.ndarray:
 
         # Allocate rotation matrix
         output = np.zeros((size, size), dtype=int)
 
-        # Set off diagonal values
-        length = len(indices)
-        for i in range(length):
+        # Set off diagonal values for each list of indices
+        for indices in indices_list:
+            length = len(indices)
 
-            index_1 = indices[i]
-            index_2 = indices[(i + 1) % length]
+            for i in range(length):
 
-            output[index_1, index_2] = 1    # TODO: THE TRANSPOSITION MIGHT BE CORRECT HERE PLEASE CHECK
+                index_1 = indices[i]
+                index_2 = indices[(i + 1) % length]
+
+                output[index_1, index_2] = 1    # TODO: THE TRANSPOSITION MIGHT BE CORRECT HERE PLEASE CHECK
 
         # Set on diagonal values
         for i in range(size):
-            if i not in indices:
+
+            for indices in indices_list:
+                if i in indices:
+                    break
+            else:
                 output[i, i] = 1
 
         return output
@@ -105,4 +112,4 @@ if __name__ == "__main__":
     print(yan3)
 
     # Print transformation matrix
-    print(Rotation.create_rotation_matrix(4, [1, 2, 3]))
+    print(Rotation.create_matrix(8, [[1, 2, 7], [4, 5, 6, 3]]))
