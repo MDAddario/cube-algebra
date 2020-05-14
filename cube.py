@@ -1,5 +1,31 @@
-import numpy as np
 from copy import deepcopy
+
+import numpy as np
+
+
+class Rotation:
+
+    @staticmethod
+    def create_rotation_matrix(size: int, indices: list) -> np.ndarray:
+
+        # Allocate rotation matrix
+        output = np.zeros((size, size), dtype=int)
+
+        # Set off diagonal values
+        length = len(indices)
+        for i in range(length):
+
+            index_1 = indices[i]
+            index_2 = indices[(i + 1) % length]
+
+            output[index_1, index_2] = 1    # TODO: THE TRANSPOSITION MIGHT BE CORRECT HERE PLEASE CHECK
+
+        # Set on diagonal values
+        for i in range(size):
+            if i not in indices:
+                output[i, i] = 1
+
+        return output
 
 
 class Cube:
@@ -7,11 +33,14 @@ class Cube:
     # Order of the colored faces on the cube
     color_order = ['W', 'R', 'G', 'Y', 'O', 'B']
 
+    # Number of mobile tiles
+    size = 6 * 8
+
     # Constructor
     def __init__(self):
 
         # Construct representation of tiles
-        self.tiles = np.identity(6 * 8)
+        self.tiles = np.identity(self.size, dtype=int)
 
         # Create ordered list of faces for rotation operations
         self.faces = []
@@ -62,11 +91,18 @@ class Cube:
         for i in range(6):
             output += f"Rotating color {self.color_order[i]} with faces {self.faces[i]}\n"
 
+        # Append the tiles
+        output += str(self.tiles)
+
         # Return the grand prize
         return output
 
 
 if __name__ == "__main__":
 
+    # Print the cube
     yan3 = Cube()
     print(yan3)
+
+    # Print transformation matrix
+    print(Rotation.create_rotation_matrix(4, [1, 2, 3]))
