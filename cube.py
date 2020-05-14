@@ -1,5 +1,4 @@
 from typing import List
-
 import numpy as np
 
 CW = 0
@@ -162,10 +161,3 @@ class Cube:
 
         # Return the grand prize
         return output
-
-
-if __name__ == "__main__":
-
-    # Print the cube
-    yan3 = Cube()
-    yan3.apply_rotation(0, CW)
