@@ -129,7 +129,7 @@ class Display:
 		# TODO: MAYBE WE NEED TO SPAN THE ROWS
 		colors = []
 		for col in range(face * 8, face * 8 + 8):
-			color_code = np.argmax(self.cube.tiles[:, col])
+			color_code = np.argmax(temp.tiles[:, col])
 			colors.append(color_map[color_code // 8])
 
 		# Paint the cube
