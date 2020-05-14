@@ -52,7 +52,7 @@ class Rotation:
             raise ValueError("Rotation type invalid.")
 
     @staticmethod
-    def from_faces(size: int, faces: List[int], rotation_type: int) -> np.ndarray:
+    def from_faces(faces: List[int], rotation_type: int) -> np.ndarray:
 
         # Get ready to store some indices!
         indices_list = []
@@ -90,12 +90,20 @@ class Cube:
     def __init__(self):
 
         # Construct representation of tiles
-        self.tiles = np.identity(48, dtype=int)
+        self.tiles = Rotation.get_matrix([[]])
 
         # Create ordered list of faces for rotation operations
         self.faces_list = []
+        self.create_faces_list()
 
-        for i in range(6):
+        # Create all of the possible rotation matrices
+        self.rotations_list = []
+        self.create_rotations_list()
+
+    # Create the list of faces
+    def create_faces_list(self):
+
+        for i in range(0, 6):
 
             faces = []
 
@@ -121,6 +129,22 @@ class Cube:
 
             self.faces_list.append(faces)
 
+    # Create the list of rotations
+    def create_rotations_list(self):
+
+        for i in range(0, 6):
+            rotations = []
+
+            for rotation_type in range(0, 3):
+                rotations.append(Rotation.from_faces(self.faces_list[i], rotation_type))
+
+            self.rotations_list.append(rotations)
+
+    # Apply rotation
+    def apply_rotation(self, face_index: int, rotation_type: int):
+
+        self.tiles = self.rotations_list[face_index][rotation_type] @ self.tiles    # TODO: MAYBE WRONG PLEASE CHECK
+
     # To string
     def __str__(self):
 
@@ -144,4 +168,4 @@ if __name__ == "__main__":
 
     # Print the cube
     yan3 = Cube()
-    print(yan3)
+    yan3.apply_rotation(0, CW)
