@@ -125,11 +125,10 @@ class Display:
 		if rotation != -1:
 			temp.apply_rotation(face, rotation)
 
-		# Span all columns
-		# TODO: MAYBE WE NEED TO SPAN THE ROWS
+		# Span all rows
 		colors = []
-		for col in range(face * 8, face * 8 + 8):
-			color_code = np.argmax(temp.tiles[:, col])
+		for row in range(face * 8, face * 8 + 8):
+			color_code = np.argmax(temp.tiles[row, :])
 			colors.append(color_map[color_code // 8])
 
 		# Paint the cube

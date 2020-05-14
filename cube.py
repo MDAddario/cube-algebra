@@ -19,7 +19,7 @@ class Rotation:
                 index_1 = indices[i]
                 index_2 = indices[(i + 1) % length]
 
-                output[index_1, index_2] = 1    # TODO: THE TRANSPOSITION MIGHT BE CORRECT HERE PLEASE CHECK
+                output[index_2, index_1] = 1
 
         # Set on diagonal values
         for i in range(48):
@@ -139,7 +139,7 @@ class Cube:
     # Apply rotation
     def apply_rotation(self, face_index: int, rotation_type: int):
 
-        self.tiles = self.rotations_list[face_index][rotation_type] @ self.tiles    # TODO: MAYBE WRONG PLEASE CHECK
+        self.tiles = self.rotations_list[face_index][rotation_type] @ self.tiles
 
     # To string
     def __str__(self):
