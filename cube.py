@@ -1,10 +1,6 @@
 from typing import List
 import numpy as np
 
-CW = 0
-HF = 1
-CCW = 2
-
 
 class Rotation:
 
@@ -41,11 +37,11 @@ class Rotation:
                     index_1: int, index_2: int, index_3: int, index_4: int,
                     rotation_type: int) -> List[List[int]]:
 
-        if rotation_type == CW:       # Clockwise
+        if rotation_type == 0:       # Clockwise
             return [[face_1 * 6 + index_1, face_2 * 6 + index_2,   face_3 * 6 + index_3, face_4 * 6 + index_4]]
-        elif rotation_type == HF:     # Half turn
+        elif rotation_type == 1:     # Half turn
             return [[face_1 * 6 + index_1, face_3 * 6 + index_3], [face_2 * 6 + index_2, face_4 * 6 + index_4]]
-        elif rotation_type == CCW:    # Counter clockwise
+        elif rotation_type == 2:     # Counter clockwise
             return [[face_4 * 6 + index_4, face_3 * 6 + index_3,   face_2 * 6 + index_2, face_1 * 6 + index_1]]
         else:
             raise ValueError("Rotation type invalid.")
@@ -84,6 +80,7 @@ class Cube:
 
     # Order of the colored faces on the cube
     color_order = ['W', 'R', 'G', 'Y', 'O', 'B']
+    rotations = ['CW', 'HALF', 'CCW']
 
     # Constructor
     def __init__(self):
